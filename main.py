@@ -2,36 +2,42 @@ import config
 from gameAPI.game import GamePacmanAgent
 import asyncio
 import pygame
-from gameAPI.button import Button
+from gameAPI.button import Button, ButtonImage
 
 game = GamePacmanAgent(config)
 
 async def main(self):
-    font_name = pygame.font.match_font('Microsoft YaHei')
-    screen_font = pygame.font.Font(font_name, 48)
     self.screen.blit(self.bg, (0, 0))
-    game_title = screen_font.render('布布姐的蛋糕冲锋', True, self.config.BLUE)
-    self.screen.blit(game_title, (self.screen_width * 0.8, self.screen_height * 0.2))
+    self.bg_width = self.bg.get_width()
+    self.bg_height = self.bg.get_height()
 
-    play_button = Button(screen_font, '开始游戏', self.config.RED, self.screen_width * 0.8, self.screen_height * 0.3)
-    exit_button = Button(screen_font, '退出', self.config.WHITE, self.screen_width * 0.8, self.screen_height * 0.4)
+    game_title = pygame.image.load(config.title_image).convert()
+    game_title= pygame.transform.scale(game_title, (game_title.get_width() * 2, game_title.get_height() * 2))
+
+    # game_title  = pygame.transform.scale(game_title)
+
+    self.screen.blit(game_title, (self.bg_width * 0.5, self.bg_height * 0.05))
+    play_button_pos_x = self.bg_width * 0.7
+    play_button_pos_y = self.bg_height * 0.2
+    exit_button_pos_x = self.bg_width * 0.7
+    exit_button_pos_y = self.bg_height * 0.35
+    play_button = ButtonImage(self.config.begin1_image, play_button_pos_x, play_button_pos_y,ratio=0.8)
+    exit_button = ButtonImage(self.config.end1_image, exit_button_pos_x, exit_button_pos_y,ratio=0.8)
+
     play_button.display(self.screen)
     exit_button.display(self.screen)
     pygame.display.update()
     await asyncio.sleep(0)
     while True:
         if play_button.check_click(pygame.mouse.get_pos()):
-            play_button = Button(screen_font, '开始游戏', self.config.RED, self.screen_width * 0.8,
-                                 self.screen_height * 0.3)
+            play_button = ButtonImage(self.config.begin1_image, play_button_pos_x, play_button_pos_y, ratio=0.8)
         else:
-            play_button = Button(screen_font, '开始游戏', self.config.WHITE, self.screen_width * 0.8,
-                                 self.screen_height * 0.3)
+            play_button = ButtonImage(self.config.begin2_image, play_button_pos_x, play_button_pos_y, ratio=0.8)
 
         if exit_button.check_click(pygame.mouse.get_pos()):
-            exit_button = Button(screen_font, '退出', self.config.RED, self.screen_width * 0.8, self.screen_height * 0.4)
+            exit_button = ButtonImage(self.config.end1_image, exit_button_pos_x, exit_button_pos_y, ratio=0.8)
         else:
-            exit_button = Button(screen_font, '退出', self.config.WHITE, self.screen_width * 0.8,
-                                 self.screen_height * 0.4)
+            exit_button = ButtonImage(self.config.end2_image, exit_button_pos_x, exit_button_pos_y, ratio=0.8)
 
         play_button.display(self.screen)
         exit_button.display(self.screen)
@@ -49,7 +55,8 @@ async def main(self):
 
     clock = pygame.time.Clock()
     start_tick = pygame.time.get_ticks()
-    total_time = 300
+    total_time = 60
+    self.screen = pygame.display.set_mode([self.screen_width, self.screen_height])  # 设置屏幕大小
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -98,10 +105,10 @@ async def main(self):
         self.screen.blit(time_text, (2, 62))
 
         # 判断游戏结束
-        if len(self.cake_sprites) == 0 or self.score == 200:
+        if rest_time == 0 and self.score > gao_score:
             is_win = True
             break
-        if rest_time == 0:
+        if rest_time == 0 and self.score <= gao_score:
             is_win = False
             break
 
@@ -109,8 +116,24 @@ async def main(self):
         await asyncio.sleep(0)
         clock.tick(30)  # 限制游戏循环的速率为每秒 30 帧
     if is_win:
-        self.__showText(msg='You won!', position=(self.screen_width // 2 - 50, int(self.screen_height / 2.5)))
+        msg = 'You won!'
+        position = (self.screen_width // 2 - 50, int(self.screen_height / 2.5))
+
     else:
-        self.__showText(msg='Game Over!', position=(self.screen_width // 2 - 80, int(self.screen_height / 2.5)))
+        msg = 'Game Over!'
+        position = (self.screen_width // 2 - 80, int(self.screen_height / 2.5))
+
+    clock = pygame.time.Clock()
+    text = self.font.render(msg, True, self.config.WHITE)
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+                pygame.quit()
+        self.screen.fill(self.config.BLACK)
+        self.screen.blit(text, position)
+        pygame.display.flip()
+        await asyncio.sleep(0)
+        clock.tick(10)
 
 asyncio.run(main(game))

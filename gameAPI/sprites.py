@@ -26,7 +26,7 @@ class Gao(pygame.sprite.Sprite):
 		pygame.sprite.Sprite.__init__(self)
 		self.ori_x, self.ori_y = x, y
 		image_size = 0.9 * image_size # 为了不卡墙
-		self.image = pygame.transform.scale(pygame.image.load(image_path).convert(),(image_size, image_size))
+		self.image = pygame.transform.scale(pygame.image.load(image_path).convert_alpha(),(image_size, image_size))
 		self.config = config
 		# 设置碰撞
 		self.rect = self.image.get_rect()
@@ -164,7 +164,7 @@ class Jian(pygame.sprite.Sprite):
 		pygame.sprite.Sprite.__init__(self)
 		self.ori_x, self.ori_y = x, y
 		image_size = 0.9 * image_size # 为了不卡墙
-		self.image = pygame.transform.scale(pygame.image.load(image_path).convert(),(image_size, image_size))
+		self.image = pygame.transform.scale(pygame.image.load(image_path).convert_alpha(),(image_size, image_size))
 		self.config = config
 		# 设置碰撞
 		self.rect = self.image.get_rect()
@@ -303,7 +303,7 @@ class LBLUE(pygame.sprite.Sprite):
 		pygame.sprite.Sprite.__init__(self)
 		self.role_name = role_image_path[0]
 		image_size = 0.75 * image_size  # 为了不卡墙
-		self.base_image = pygame.image.load(role_image_path).convert()
+		self.base_image = pygame.image.load(role_image_path).convert_alpha()
 		self.base_image = pygame.transform.scale(self.base_image, (image_size, image_size))
 		self.image = self.base_image.copy()
 		self.rect = self.image.get_rect()
