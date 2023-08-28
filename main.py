@@ -51,8 +51,37 @@ async def main(self):
             if play_button.check_click(pygame.mouse.get_pos()):
                 break
             if exit_button.check_click(pygame.mouse.get_pos()):
+                pygame.quit()
+                raise SystemExit
+
+    # 规则界面
+    bg2 = pygame.image.load(config.bg2)
+    bg2= pygame.transform.scale(bg2, (bg2.get_width() * 0.6, bg2.get_height() * 0.6))
+
+    self.screen = pygame.display.set_mode([bg2.get_width(), bg2.get_height()])  # 设置屏幕大小
+    self.screen.blit(bg2, (0, 0))
+    play_button_pos_x = bg2.get_width() * 0.85
+    play_button_pos_y = bg2.get_height() * 0.9
+    pygame.display.update()
+    await asyncio.sleep(0)
+    while True:
+        if play_button.check_click(pygame.mouse.get_pos()):
+            play_button = ButtonImage(self.config.bg2_play1, play_button_pos_x, play_button_pos_y, ratio=0.8)
+        else:
+            play_button = ButtonImage(self.config.bg2_play2, play_button_pos_x, play_button_pos_y, ratio=0.8)
+
+        play_button.display(self.screen)
+        pygame.display.update()
+        await asyncio.sleep(0)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                raise SystemExit
+        if pygame.mouse.get_pressed()[0]:
+            if play_button.check_click(pygame.mouse.get_pos()):
                 break
 
+    # 正式开始
     clock = pygame.time.Clock()
     start_tick = pygame.time.get_ticks()
     total_time = 60
