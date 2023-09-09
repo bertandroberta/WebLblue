@@ -11,12 +11,24 @@ import sys
 import asyncio
 from .sprites import *
 from .button import Button
+import os
+import random
 
 # 根据Text文件生成地图
 '''layout file parser'''
 class LayoutParser():
-	def __init__(self, config, **kwargs):
-		self.gamemap = self.__parse(config.layout_filepath) # 二维
+	def __init__(self, config, times = 0, **kwargs):
+		self.gamemapRoot = config.layout_fileroot
+		lay_outFile = []
+		for root, dirs, files in os.walk(self.gamemapRoot):
+			for file in files:
+				if file.split('.')[-1] == 'lay':
+					lay_outFile.append(os.path.join(self.gamemapRoot,file))
+		if times > 0:
+			layout = random.choice(lay_outFile)
+		else:
+			layout = config.layout_filepath
+		self.gamemap = self.__parse(layout) # 二维
 		self.height = len(self.gamemap)
 		self.width = len(self.gamemap[0])
 	'''parse .lay'''
@@ -45,16 +57,20 @@ class LayoutParser():
 		return gamemap
 
 
+
+
 '''define the game agent'''
 class GamePacmanAgent():
-	def __init__(self, config, **kwargs):
+	def __init__(self, config, times = 0, **kwargs):
 		self.config = config
-		self.layout = LayoutParser(config)
+		self.layout = LayoutParser(config, times = times)
 		self.screen_width = self.layout.width * config.grid_size
 		self.screen_height = self.layout.height * config.grid_size
 		self.bg = pygame.image.load(config.bg)
 		self.bg = pygame.transform.scale(self.bg, (self.bg.get_width() * 0.8, self.bg.get_height() * 0.8))
-
+		wall_color = [self.config.WHITE,self.config.BLUE,self.config.GREEN,self.config.RED,self.config.YELLOW,
+					  self.config.PURPLE,self.config.SKYBLUE]
+		self.wall_color = random.choice(wall_color)
 		self.reset()
 
 
@@ -80,7 +96,7 @@ class GamePacmanAgent():
 				elem = self.layout.gamemap[i][j]
 				if elem == 'wall':
 					position = [j * self.config.grid_size, i*self.config.grid_size]
-					wall_sprites.add(Wall(*position, self.config.grid_size, self.config.grid_size, self.config.SKYBLUE))
+					wall_sprites.add(Wall(*position, self.config.grid_size, self.config.grid_size, self.wall_color))
 				elif elem == 'cake':
 					position = [j*self.config.grid_size+self.config.grid_size*0.5, i*self.config.grid_size+self.config.grid_size*0.5]
 					cake_sprites.add(Cake(*position, self.config.cake_image_path, self.config.grid_size))

@@ -49,7 +49,14 @@ bg2_play1 = 'play1.png'
 bg2_play2 = 'play2.png'
 bg = 'PosterFormal.jpg'
 bg2 = 'bg2.png'
-layout_filepath = 'layouts/mediumClassic.lay' # decide the game map
+bgend1 = 'bgend1.png'
+bgend2 = 'bgend2.png'
+back2menublack = 'back2menublack.png'
+back2menured = 'back2menured.png'
+back2menublue = 'back2menublue.png'
+
+layout_fileroot = 'layouts'
+layout_filepath = 'layouts/ClassicEasy.lay' # decide the game map
 ghost_image_paths = [(each.split('.')[0], os.path.join(os.getcwd(), each)) for each in ['gameAPI/images/Blinky.png', 'gameAPI/images/Inky.png', 'gameAPI/images/Pinky.png', 'gameAPI/images/Clyde.png']]
 scaredghost_image_path = os.path.join(os.getcwd(), 'gameAPI/images/scared.png')
 pacman_image_path = ('pacman', os.path.join(os.getcwd(), 'gameAPI/images/pacman.png'))
