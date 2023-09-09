@@ -24,13 +24,13 @@ async def main():
         self.screen.blit(game_title, (self.bg_width * 0.5, self.bg_height * 0.05))
         play_button_pos_x = self.bg_width * 0.7
         play_button_pos_y = self.bg_height * 0.2
-        exit_button_pos_x = self.bg_width * 0.7
-        exit_button_pos_y = self.bg_height * 0.35
+        # exit_button_pos_x = self.bg_width * 0.7
+        # exit_button_pos_y = self.bg_height * 0.35
         play_button = ButtonImage(self.config.begin1_image, play_button_pos_x, play_button_pos_y,ratio=0.8)
-        exit_button = ButtonImage(self.config.end1_image, exit_button_pos_x, exit_button_pos_y,ratio=0.8)
+        # exit_button = ButtonImage(self.config.end1_image, exit_button_pos_x, exit_button_pos_y,ratio=0.8)
 
         play_button.display(self.screen)
-        exit_button.display(self.screen)
+        # exit_button.display(self.screen)
         pygame.display.update()
         await asyncio.sleep(0)
         while True:
@@ -39,13 +39,13 @@ async def main():
             else:
                 play_button = ButtonImage(self.config.begin2_image, play_button_pos_x, play_button_pos_y, ratio=0.8)
 
-            if exit_button.check_click(pygame.mouse.get_pos()):
-                exit_button = ButtonImage(self.config.end1_image, exit_button_pos_x, exit_button_pos_y, ratio=0.8)
-            else:
-                exit_button = ButtonImage(self.config.end2_image, exit_button_pos_x, exit_button_pos_y, ratio=0.8)
+            # if exit_button.check_click(pygame.mouse.get_pos()):
+            #     exit_button = ButtonImage(self.config.end1_image, exit_button_pos_x, exit_button_pos_y, ratio=0.8)
+            # else:
+            #     exit_button = ButtonImage(self.config.end2_image, exit_button_pos_x, exit_button_pos_y, ratio=0.8)
 
             play_button.display(self.screen)
-            exit_button.display(self.screen)
+            # exit_button.display(self.screen)
             pygame.display.update()
             await asyncio.sleep(0)
             for event in pygame.event.get():
