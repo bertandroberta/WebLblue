@@ -68,7 +68,7 @@ class GamePacmanAgent():
 		self.screen_height = self.layout.height * config.grid_size
 		self.bg = pygame.image.load(config.bg)
 		self.bg = pygame.transform.scale(self.bg, (self.bg.get_width() * 0.8, self.bg.get_height() * 0.8))
-		wall_color = [self.config.WHITE,self.config.BLUE,self.config.GREEN,self.config.RED,self.config.YELLOW,
+		wall_color = [self.config.BLUE,self.config.GREEN,self.config.YELLOW,
 					  self.config.PURPLE,self.config.SKYBLUE]
 		self.wall_color = random.choice(wall_color)
 		self.reset()
