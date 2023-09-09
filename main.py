@@ -89,7 +89,7 @@ async def main():
         # 正式开始
         clock = pygame.time.Clock()
         start_tick = pygame.time.get_ticks()
-        total_time = 10
+        total_time = 60
         self.screen = pygame.display.set_mode([self.screen_width, self.screen_height])  # 设置屏幕大小
         while True:
             for event in pygame.event.get():
